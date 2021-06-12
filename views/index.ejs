@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCM NODE</title>
+    <style>
+        td {
+            border: 1px solid;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>User List</h1>
+    <p id="msg"></p>
+    <table id="btn">
+        <tr>
+            <td>
+                id
+            </td>
+            <td>
+                name
+            </td>
+            <td>
+                token
+            </td>
+            <td>
+                action
+            </td>
+        </tr>
+        <% for(var i=0; i < data.length; i++) { %>
+            <tr>
+                <td>
+                    <%= data[i].id %>
+                </td>
+                <td>
+                    <%= data[i].name %>
+                </td>
+                <td>
+                    <%= data[i].token %>
+                </td>
+                <td>
+                    <button data-token="<%= data[i].token %>">send him</button>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const btn = document.getElementById("btn")
+    btn.addEventListener('click', async (e) => {
+        e.preventDefault()
+        if (e.target.tagName == "BUTTON") {
+            const token = e.target.dataset.token
+            const res = await axios.get(`/send/${token}`)
+            console.log(res);
+            const msg = document.getElementById("msg")
+            msg.innerText = `${JSON.stringify(res.data.results[0])}`
+        }
+    })
+</script>
+
+</html>
